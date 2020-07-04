@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>简单的 vue 例子</title>
+</head>
+<body>
+  <div id="app">
+    <input type="text" v-model="message">
+    <input type="text" v-model="test">
+
+    <div >
+      message: <span v-bind="message"></span>
+    </div>
+    <div>
+        test: <span v-bind="test"></span>
+    </div>
+  </div>
+  <script>
+    var model = {
+      message: 'hello world',
+      test: '123'
+    }
+
+    for (var key in model) {
+      var models = document.querySelectorAll("[v-model=\""+key+"\"]")
+      for (var i = 0; i < models.length; i++) {
+        models[i].onkeyup = function() {
+          model[key] = this.value
+        }
+      }
+
+      Object.defineProperty(model, key, {
+        get: function() {
+          return this.value
+        },
+        set: function(val) {
+          var binds = app.querySelectorAll("[v-bind=\""+ key +"\"]")
+          var models = document.querySelectorAll("[v-model=\""+ key +"\"]")
+
+          for(var j = 0; j < binds.length; j++) {
+            binds[j].innerHTML = val
+          }
+          for (var k = 0; k < models.length; k++) {
+            models[k].value = val
+          }
+          this.value = val
+        }
+      })
+    }
+  </script>
+</body>
+</html>
